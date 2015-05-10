@@ -1,0 +1,25 @@
+<?php
+
+ require_once  "/home/nbgsys/proyects/html/coffee/app/Coffeecircle/Actions/DoUploadOrders.php";
+ require_once  "/home/nbgsys/proyects/html/coffee/app/Coffeecircle/Actions/DoUploadRates.php";
+
+ $doUploadOrders = new DoUploadOrders;
+ $doUploadRates = new DoUploadRates;
+
+ $doUploadOrders->readOrdersFile($_FILES);
+ $doUploadRates->readRatesFile($_FILES);
+
+ $orders = $doUploadOrders->getAllOrderWithSort();
+ $rates = $doUploadRates->getAllRatesWithSort();
+
+ $doUploadOrders->convertToCurrency($orders, $rates, $_POST['currency']);
+if (isset($_POST['getcsv'])){
+/*
+    header("Content-type: text/csv");
+    header("Content-Disposition: attachment; filename=newdata.csv");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+*/
+    $doUploadOrders->outputCSV($_POST['currency']);
+}
+
